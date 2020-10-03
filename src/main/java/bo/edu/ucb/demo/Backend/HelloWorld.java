@@ -3,9 +3,7 @@ package bo.edu.ucb.demo.Backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/mi_ruta")
 public class HelloWorld {
-
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -40,7 +37,12 @@ public class HelloWorld {
     @RequestMapping(value = "/student", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String findStudent()
     {
-        Student student = new Student();
-        return student.getData(10);
+        IPrintDataById student = new Student("10", jdbcTemplate);
+        return student.getData();
+    }
+    @GetMapping("/students/{id}")
+    public String getEmployeesById(@PathVariable String id){
+        IPrintDataById student = new Student(id,jdbcTemplate);
+        return student.getData();
     }
 }
